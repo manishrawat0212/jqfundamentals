@@ -1,25 +1,26 @@
-$(document).ready(function(){
-  var $searchInput = $("input[name='q']");
-  var $label = $("label[for='q']");
-  var hint = new inputHint($searchInput, $label);
-  hint.init();
-});
-
-function inputHint($searchInput, $label){
-  this.$searchInput = $searchInput;
-  this.$label = $label;
+var options = {
+  searchInput : $("input[name='q']")
 }
 
-inputHint.prototype.init = function() {
-  var labelText = this.$label.remove().text();
-  this.$searchInput.val(labelText)
-              .addClass("hint")
-              .bind("focus", function(){
-                $(this).val("").removeClass("hint");
-              })
-              .bind("blur", function(){
-                if(!$.trim($(this).val())){
-                  $(this).val(labelText).addClass("hint");
-                }
-              });
+function InputHintMaker(options){
+  this.searchInput = options.searchInput;
+}
+
+InputHintMaker.prototype.showHint = function() {
+  var labelText = this.searchInput.siblings("[for='q']").remove().text();
+  this.searchInput.val(labelText)
+                  .addClass("hint")
+                  .on("focus", function(){
+                    $(this).val("").removeClass("hint");
+                  })
+                  .on("blur", function(){
+                    if($.trim($(this).val()) == ""){
+                      $(this).val(labelText).addClass("hint");
+                    }
+                  });
 };
+
+$(document).ready(function(){
+  var hint = new InputHintMaker(options);
+  hint.showHint();
+});

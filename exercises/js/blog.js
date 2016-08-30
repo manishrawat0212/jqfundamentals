@@ -1,18 +1,21 @@
-$(document).ready(function(){
-  var $blogHeading = $("#blog h3");
-  var reveal = new hiddenText($blogHeading);
-  reveal.init();
-});
-
-function hiddenText($blogHeading){
-  this.$blogHeading = $blogHeading;
+var options = {
+  blog: $("#blog h3")
 }
 
-hiddenText.prototype.init = function() {
-  this.$blogHeading.bind("click", function(event){
-  	var $heading = $(this);
-    $heading.siblings("p.excerpt").slideToggle();
-    $heading.parent().siblings().find("p.excerpt:visible").slideUp();
+var HiddenTextRevealer = function (options){
+  this.headings = options.blog;
+}
+
+HiddenTextRevealer.prototype.toggleText = function(){
+  this.headings.on("click", function(event){
     event.preventDefault();
+    var heading = $(this);
+    heading.siblings("p.excerpt").slideToggle();
+    heading.closest("li").siblings().find("p.excerpt:visible").slideUp();
   });
 };
+
+$(document).ready(function(){
+  var reveal = new HiddenTextRevealer(options);
+  reveal.toggleText();
+});

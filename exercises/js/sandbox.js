@@ -32,10 +32,11 @@ $("#slideshow li:first").addClass("current").siblings().addClass("disabled");
 
 var uList = $("#myList");
 for(var index = 1; index <= 5; index++){
-  $("<li>New List Item " + index + "</li>").appendTo(uList);
+  var item = $("<li></li>").appendTo(uList);
+  item.text("New List Item " + index);
 }
 
-$("#myList li:even").detach();
+$("#myList li:even").remove();
 
 $("div.module:last").append("<h2>New heading h2</h2>").append("<p>New paragraph</p>");
 

@@ -7,45 +7,25 @@ var SlideshowCreator = function(options){
 }
 
 SlideshowCreator.prototype.startShow = function() {
-  this.cssClasses();
-
-  var slideshowContainer = $("<div></div>").prependTo("body");
+  var slideshowContainer = $("<div></div>");
   slideshowContainer.addClass('slideshow-div');
   
-  this.slideshow.appendTo(slideshowContainer);
-
-  this.counter = $("<p></p>").appendTo(slideshowContainer);
-  var thumbnailsContainer = $("<div></div>").appendTo(slideshowContainer);
+  var thumbnailsContainer = $("<div></div>");
   thumbnailsContainer.addClass('thumbnails');
   
   this.thumbs = this.slideshow.find("img").clone();
-  this.thumbs.appendTo(thumbnailsContainer);
 
   this.slides = this.slideshow.find("li");
   this.totalSlides = this.slides.length;
   this.slides.hide();
 
+  this.slideshow.appendTo(slideshowContainer);
+  this.counter = $("<p></p>").appendTo(slideshowContainer);
+  this.thumbs.appendTo(thumbnailsContainer);
+  thumbnailsContainer.appendTo(slideshowContainer);
+  slideshowContainer.prependTo("body");
+
   this.slideChanger();
-};
-
-SlideshowCreator.prototype.cssClasses = function() {
-  $("<style type='text/css'> \
-    .slideshow-div{ \
-      height : 470px; \
-      border : 2px solid black; \
-      padding : 4px \
-    } </style>").appendTo("head");
-  
-  $("<style type='text/css'> \
-    .thumbnails img{ \
-      height : 40px; \
-      margin : 10px; \
-    } </style>").appendTo("head");
-
-  $("<style type='text/css'> \
-    .current-thumbnail{ \
-      border : 3px solid grey; \
-    } </style>").appendTo("head");
 };
 
 SlideshowCreator.prototype.slideChanger = function() {

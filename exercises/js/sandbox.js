@@ -32,8 +32,9 @@ $("#slideshow li:first").addClass("current").siblings().addClass("disabled");
 
 var uList = $("#myList");
 for(var index = 1; index <= 5; index++){
-  var item = $("<li></li>").appendTo(uList);
+  var item = $("<li></li>");
   item.text("New List Item " + index);
+  item.appendTo(uList);
 }
 
 $("#myList li:even").remove();

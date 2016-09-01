@@ -1,12 +1,12 @@
-var options = {
+var slideshowOptions = {
   slideshow : $("#slideshow")
 }
 
-var SlideshowCreator = function(options){
-  this.slideshow = options.slideshow;
+var SlideshowCreator = function(slideshowOptions){
+  this.slideshow = slideshowOptions.slideshow;
 }
 
-SlideshowCreator.prototype.startShow = function() {
+SlideshowCreator.prototype.start   = function() {
   var slideshowContainer = $("<div></div>");
   slideshowContainer.addClass('slideshow-div');
   
@@ -25,32 +25,33 @@ SlideshowCreator.prototype.startShow = function() {
   thumbnailsContainer.appendTo(slideshowContainer);
   slideshowContainer.prependTo("body");
 
-  this.slideChanger();
+  this.slides.eq(0).fadeIn(500);
+  this.slideChanger(this.slides.eq(0));
 };
 
-SlideshowCreator.prototype.slideChanger = function() {
-  var index = 0;
-  this.currentSlide(index);
-  index++;
+SlideshowCreator.prototype.slideChanger = function(current) {
   var _this = this;
-  if(index < this.totalSlides){
-    setInterval(function(){
-      _this.currentSlide(index);
-      if(++index == _this.totalSlides){
-        index = 0;
-      }
-    }, 3250);
+  if($(current).nextAll().length == 0){
+    next = this.slides.eq(0);
   }
-};
+  else{
+    next = current.next();
+  }
 
-SlideshowCreator.prototype.currentSlide = function(index) {
-  this.thumbs.eq(index).addClass("current-thumbnail");
-  this.thumbs.eq(index).siblings().removeClass("current-thumbnail");
-  this.slides.eq(index).fadeIn(50).delay(3000).fadeOut(200);
-  this.counter.html("<b>Slide " + (index + 1) + " of " + this.totalSlides + "</b>");
+  var num = $(current).prevAll().length;
+  this.counter.html("<b>Slide " + (num + 1) + " of " + this.totalSlides + "</b>");
+  this.thumbs.eq(num).addClass("current-thumbnail");
+  this.thumbs.eq(num).siblings().removeClass("current-thumbnail");
+
+  setTimeout(function() {
+    $(current).fadeOut(400, function() {
+      $(next).fadeIn(400);
+      _this.slideChanger(next);
+    });
+  }, 3000);
 };
 
 $(document).ready(function(){
-  var show = new SlideshowCreator(options);
-  show.startShow();
+  var show = new SlideshowCreator(slideshowOptions);
+  show.start();
 });

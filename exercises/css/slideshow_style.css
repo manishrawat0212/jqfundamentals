@@ -1,7 +1,8 @@
 .slideshow-div{
   height : 470px;
   border : 2px solid black;
-  padding : 4px
+  padding : 4px;
+  position: relative;
 }
  
 .thumbnails img{
@@ -11,4 +12,13 @@
 
 .current-thumbnail{
   border : 3px solid grey;
+}
+
+.slides{
+  position: absolute;
+}
+
+.thumbs{
+  position: absolute;
+  bottom: 0;
 }
